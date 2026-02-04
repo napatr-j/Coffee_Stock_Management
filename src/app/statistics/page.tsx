@@ -34,10 +34,10 @@ const COLORS = ['#000000', '#333333', '#666666', '#999999', '#CCCCCC', '#DDDDDD'
 
 export default function StatisticsPage() {
   const [activeTab, setActiveTab] = useState<'in' | 'out' | 'inventory' | 'charts'>('in');
-  const [coffeeInData, setCoffeeInData] = useState([]);
-  const [coffeeOutData, setCoffeeOutData] = useState([]);
+  const [coffeeInData, setCoffeeInData] = useState<any[]>([]);
+  const [coffeeOutData, setCoffeeOutData] = useState<any[]>([]);
   const [inventoryData, setInventoryData] = useState<CoffeeQuantity[]>([]);
-  const [chartData, setChartData] = useState([]);
+  const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<CoffeeQuantity[]>([]);
 
@@ -71,10 +71,10 @@ export default function StatisticsPage() {
         getMonthlyTimeSeries(year),
       ]);
 
-      if (inResult.success) setCoffeeInData(inResult.data);
-      if (outResult.success) setCoffeeOutData(outResult.data);
-      if (invResult.success) setInventoryData(invResult.data);
-      if (chartResult.success) setChartData(chartResult.data);
+      if (inResult.success) setCoffeeInData(inResult.data ?? []);
+      if (outResult.success) setCoffeeOutData(outResult.data ?? []);
+      if (invResult.success) setInventoryData(invResult.data ?? []);
+      if (chartResult.success) setChartData(chartResult.data ?? []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

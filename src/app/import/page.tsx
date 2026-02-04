@@ -10,9 +10,16 @@ import { CoffeeQuantity } from '@prisma/client';
 export default function ImportPage() {
   const router = useRouter();
   const [products, setProducts] = useState<CoffeeQuantity[]>([]);
-  const [rows, setRows] = useState([
+  type Row = {
+    product_id: number | '';
+    quantity_box_or_pack: number | '';
+    receiver_or_sender: string;
+    note: string;
+  };
+
+  const [rows, setRows] = useState<Row[]>([
     {
-      product_id: 0,
+      product_id: '',
       quantity_box_or_pack: '',
       receiver_or_sender: '',
       note: '',
@@ -41,7 +48,7 @@ export default function ImportPage() {
     setRows([
       ...rows,
       {
-        product_id: 0,
+        product_id: '',
         quantity_box_or_pack: '',
         receiver_or_sender: '',
         note: '',
