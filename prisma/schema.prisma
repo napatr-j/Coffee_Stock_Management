@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CoffeeQuantity {
+  id           Int          @id @default(autoincrement())
+  name         String       @unique
+  quantity_pack Int         @default(0)
+  pack_per_box Int          @default(0)
+  coffeeIn     CoffeeIn[]
+  coffeeOut    CoffeeOut[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@map("coffee_quantity")
+}
+
+model CoffeeIn {
+  id            Int          @id @default(autoincrement())
+  product_id    Int
+  quantity_box  Int
+  quantity_pack Int
+  receiver      String
+  note          String?
+  date_in       DateTime     @default(now())
+  product       CoffeeQuantity @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("coffee_in")
+  @@index([product_id])
+  @@index([date_in])
+}
+
+model CoffeeOut {
+  id            Int          @id @default(autoincrement())
+  product_id    Int
+  quantity_pack Int
+  sender        String
+  note          String?
+  date_out      DateTime     @default(now())
+  product       CoffeeQuantity @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("coffee_out")
+  @@index([product_id])
+  @@index([date_out])
+}
