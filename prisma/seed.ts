@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -8,18 +6,7 @@ import * as path from 'path';
 dotenv.config({ path: path.resolve('.env.local') });
 dotenv.config({ path: path.resolve('.env') });
 
-const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL;
-
-if (!connectionString) {
-  throw new Error('DATABASE_URL or DIRECT_URL environment variable is not set');
-}
-
-console.log('Using DATABASE_URL:', connectionString.substring(0, 50) + '...');
-
-const pool = new Pool({ connectionString });
-const adapter = new PrismaPg(pool);
-
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
   console.log('🌱 Starting seed...');
