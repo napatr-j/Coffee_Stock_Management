@@ -28,6 +28,7 @@ model CoffeeIn {
   quantity_box  Int
   quantity_pack Int
   receiver      String
+  po_no         String?
   note          String?
   date_in       DateTime     @default(now())
   product       CoffeeQuantity @relation(fields: [product_id], references: [id], onDelete: Cascade)

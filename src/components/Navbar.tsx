@@ -8,9 +8,9 @@ export function Navbar() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/import', label: 'นำสินค้าเข้า' },
-    { href: '/export', label: 'นำสินค้าออก' },
-    { href: '/statistics', label: 'สถิติ' },
+    { href: '/import', label: 'รับสินค้า' },
+    { href: '/export', label: 'ส่งสินค้า' },
+    { href: '/statistics', label: 'stock' },
   ];
 
   return (
@@ -22,8 +22,9 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-8"
           >
-            <Link href="/" className="text-xl font-bold hover:text-gray-300 transition">
-              ☕ Coffee Stock
+            <Link href="/" className="text-sm font-bold hover:text-gray-300 transition">
+              <div>บริษัท ทริลเลียนอิเทอร์นิตี้ จำกัด</div>
+              <div className="text-xs">Trillion Eternity</div>
             </Link>
             <div className="flex items-center space-x-6">
               {navItems.map((item) => {

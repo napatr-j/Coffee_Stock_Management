@@ -12,16 +12,18 @@ export default function ExportPage() {
   const [products, setProducts] = useState<CoffeeQuantity[]>([]);
   type Row = {
     product_id: number | '';
-    quantity_box_or_pack: number | '';
-    receiver_or_sender: string;
+    quantity_pack: number | '';
+    quantity_box: number | '';
+    supplier: string;
     note: string;
   };
 
   const [rows, setRows] = useState<Row[]>([
     {
       product_id: '',
-      quantity_box_or_pack: '',
-      receiver_or_sender: '',
+      quantity_pack: '',
+      quantity_box: '',
+      supplier: '',
       note: '',
     },
   ]);
@@ -49,8 +51,9 @@ export default function ExportPage() {
       ...rows,
       {
         product_id: '',
-        quantity_box_or_pack: '',
-        receiver_or_sender: '',
+        quantity_pack: '',
+        quantity_box: '',
+        supplier: '',
         note: '',
       },
     ]);
@@ -83,8 +86,8 @@ export default function ExportPage() {
       const validRows = rows.filter(
         (row) =>
           row.product_id &&
-          row.quantity_box_or_pack &&
-          row.receiver_or_sender
+          (row.quantity_pack || row.quantity_box) &&
+          row.supplier
       );
 
       if (validRows.length === 0) {
@@ -95,8 +98,9 @@ export default function ExportPage() {
 
       const formattedData = validRows.map((row) => ({
         product_id: row.product_id,
-        quantity_pack: row.quantity_box_or_pack,
-        sender: row.receiver_or_sender,
+        quantity_pack: row.quantity_pack ? parseInt(row.quantity_pack.toString()) : 0,
+        quantity_box: row.quantity_box ? parseInt(row.quantity_box.toString()) : 0,
+        supplier: row.supplier,
         note: row.note || undefined,
       }));
 
@@ -130,8 +134,8 @@ export default function ExportPage() {
           animate={{ y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-black mb-2">นำสินค้าออก</h1>
-          <p className="text-gray-600">บันทึกการส่งสินค้าออกจากคลังสินค้า</p>
+          <h1 className="text-3xl font-bold text-black mb-2">ส่งสินค้า</h1>
+          <p className="text-gray-600">บันทึกการส่งสินค้า</p>
         </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -199,7 +203,7 @@ export default function ExportPage() {
             whileTap={{ scale: loading ? 1 : 0.98 }}
             className="w-full px-4 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'กำลังบันทึก...' : 'บันทึกสินค้าออก'}
+            {loading ? 'กำลังบันทึก...' : 'บันทึกการส่งสินค้า'}
           </motion.button>
         </form>
       </div>

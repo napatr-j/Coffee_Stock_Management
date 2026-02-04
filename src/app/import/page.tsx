@@ -14,6 +14,7 @@ export default function ImportPage() {
     product_id: number | '';
     quantity_box_or_pack: number | '';
     receiver_or_sender: string;
+    po_no: string;
     note: string;
   };
 
@@ -22,6 +23,7 @@ export default function ImportPage() {
       product_id: '',
       quantity_box_or_pack: '',
       receiver_or_sender: '',
+      po_no: '',
       note: '',
     },
   ]);
@@ -45,12 +47,14 @@ export default function ImportPage() {
   }, []);
 
   const handleAddRow = () => {
+    const firstPoNo = rows.length > 0 ? rows[0].po_no : '';
     setRows([
       ...rows,
       {
         product_id: '',
         quantity_box_or_pack: '',
         receiver_or_sender: '',
+        po_no: firstPoNo,
         note: '',
       },
     ]);
@@ -97,6 +101,7 @@ export default function ImportPage() {
         product_id: row.product_id,
         quantity_box: row.quantity_box_or_pack,
         receiver: row.receiver_or_sender,
+        po_no: row.po_no || undefined,
         note: row.note || undefined,
       }));
 
@@ -130,8 +135,8 @@ export default function ImportPage() {
           animate={{ y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-black mb-2">นำสินค้าเข้า</h1>
-          <p className="text-gray-600">บันทึกการรับสินค้าเข้าคลังสินค้า</p>
+          <h1 className="text-3xl font-bold text-black mb-2">รับสินค้า</h1>
+          <p className="text-gray-600">บันทึกการรับสินค้า</p>
         </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -175,6 +180,7 @@ export default function ImportPage() {
                   onChange={handleChange}
                   values={row}
                   isExport={false}
+                  showPoNo={true}
                 />
               ))}
             </AnimatePresence>
@@ -199,7 +205,7 @@ export default function ImportPage() {
             whileTap={{ scale: loading ? 1 : 0.98 }}
             className="w-full px-4 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'กำลังบันทึก...' : 'บันทึกสินค้าเข้า'}
+            {loading ? 'กำลังบันทึก...' : 'บันทึกการรับสินค้า'}
           </motion.button>
         </form>
       </div>

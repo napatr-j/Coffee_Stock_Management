@@ -39,6 +39,7 @@ export async function createCoffeeIn(items: any[]) {
             quantity_box: item.quantity_box,
             quantity_pack,
             receiver: item.receiver,
+            po_no: item.po_no || null,
             note: item.note || null,
           },
         });
@@ -91,10 +92,16 @@ export async function createCoffeeOut(items: any[]) {
           throw new Error(`Product ${item.product_id} not found`);
         }
 
+        // Calculate total quantity_pack from boxes (if provided)
+        let totalQuantityPack = item.quantity_pack || 0;
+        if (item.quantity_box && item.quantity_box > 0) {
+          totalQuantityPack += convertBoxToPack(item.quantity_box, product.pack_per_box);
+        }
+
         // Check if stock is available
-        if (product.quantity_pack < item.quantity_pack) {
+        if (product.quantity_pack < totalQuantityPack) {
           throw new Error(
-            `Insufficient stock for ${product.name}. Available: ${product.quantity_pack}, Requested: ${item.quantity_pack}`
+            `Insufficient stock for ${product.name}. Available: ${product.quantity_pack}, Requested: ${totalQuantityPack}`
           );
         }
 
@@ -102,8 +109,8 @@ export async function createCoffeeOut(items: any[]) {
         const coffeeOut = await tx.coffeeOut.create({
           data: {
             product_id: item.product_id,
-            quantity_pack: item.quantity_pack,
-            sender: item.sender,
+            quantity_pack: totalQuantityPack,
+            sender: item.supplier || 'N/A',
             note: item.note || null,
           },
         });
@@ -113,7 +120,7 @@ export async function createCoffeeOut(items: any[]) {
           where: { id: item.product_id },
           data: {
             quantity_pack: {
-              decrement: item.quantity_pack,
+              decrement: totalQuantityPack,
             },
           },
         });
