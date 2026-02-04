@@ -20,6 +20,8 @@ interface FormRowProps {
   };
   isExport?: boolean;
   showPoNo?: boolean;
+  firstPoNo?: string;
+  onCopyPoNo?: (poNo: string) => void;
 }
 
 export function FormRow({
@@ -30,6 +32,8 @@ export function FormRow({
   values,
   isExport = false,
   showPoNo = false,
+  firstPoNo,
+  onCopyPoNo,
 }: FormRowProps) {
   const selectedProduct = products.find((p) => p.id === values.product_id);
 
@@ -89,25 +93,6 @@ export function FormRow({
         <>
           <div className="flex-1">
             <label className="block text-xs font-semibold text-gray-600 mb-1">
-              จำนวน (แพ็ก)
-            </label>
-            <input
-              type="number"
-              min="0"
-              value={values.quantity_pack}
-              onChange={(e) =>
-                onChange(
-                  index,
-                  'quantity_pack',
-                  e.target.value ? parseInt(e.target.value) : ''
-                )
-              }
-              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
-              placeholder="0"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-xs font-semibold text-gray-600 mb-1">
               จำนวน (กล่อง)
             </label>
             <input
@@ -125,38 +110,72 @@ export function FormRow({
               placeholder="0"
             />
           </div>
+          <div className="flex-1">
+            <label className="block text-xs font-semibold text-gray-600 mb-1">
+              จำนวน (แพ็ก)
+            </label>
+            <input
+              type="number"
+              min="0"
+              value={values.quantity_pack}
+              onChange={(e) =>
+                onChange(
+                  index,
+                  'quantity_pack',
+                  e.target.value ? parseInt(e.target.value) : ''
+                )
+              }
+              className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
+              placeholder="0"
+            />
+          </div>
         </>
       )}
 
       {/* P/O NO - แสดงเฉพาะ import */}
       {showPoNo && (
-        <div className="flex-1">
+        <div className="flex flex-col gap-1">
           <label className="block text-xs font-semibold text-gray-600 mb-1">
             P/O NO.
           </label>
-          <input
-            type="text"
-            value={values.po_no || ''}
-            onChange={(e) => onChange(index, 'po_no', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
-            placeholder="P/O NO."
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={values.po_no || ''}
+              onChange={(e) => onChange(index, 'po_no', e.target.value)}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
+              placeholder="P/O NO."
+            />
+            {index > 0 && firstPoNo && (
+              <motion.button
+                type="button"
+                onClick={() => onCopyPoNo?.(firstPoNo)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-3 py-2 bg-blue-500 text-white rounded-md text-sm font-semibold hover:bg-blue-600 transition whitespace-nowrap"
+              >
+                📋 Copy
+              </motion.button>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Receiver/Sender (Supplier for export) */}
-      <div className="flex-1">
-        <label className="block text-xs font-semibold text-gray-600 mb-1">
-          {isExport ? 'ผู้ส่งออก' : 'ผู้รับ'}
-        </label>
-        <input
-          type="text"
-          value={values.receiver_or_sender || values.supplier || ''}
-          onChange={(e) => onChange(index, isExport ? 'supplier' : 'receiver_or_sender', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
-          placeholder={isExport ? 'ผู้ส่งออก' : 'ชื่อ'}
-        />
-      </div>
+      {/* Receiver (import only) */}
+      {!isExport && (
+        <div className="flex-1">
+          <label className="block text-xs font-semibold text-gray-600 mb-1">
+            ผู้รับ
+          </label>
+          <input
+            type="text"
+            value={values.receiver_or_sender || ''}
+            onChange={(e) => onChange(index, 'receiver_or_sender', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            placeholder="ชื่อ"
+          />
+        </div>
+      )}
 
       {/* Note */}
       <div className="flex-1">

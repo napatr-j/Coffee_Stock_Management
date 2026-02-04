@@ -14,7 +14,6 @@ export default function ExportPage() {
     product_id: number | '';
     quantity_pack: number | '';
     quantity_box: number | '';
-    supplier: string;
     note: string;
   };
 
@@ -23,7 +22,6 @@ export default function ExportPage() {
       product_id: '',
       quantity_pack: '',
       quantity_box: '',
-      supplier: '',
       note: '',
     },
   ]);
@@ -53,7 +51,6 @@ export default function ExportPage() {
         product_id: '',
         quantity_pack: '',
         quantity_box: '',
-        supplier: '',
         note: '',
       },
     ]);
@@ -86,8 +83,7 @@ export default function ExportPage() {
       const validRows = rows.filter(
         (row) =>
           row.product_id &&
-          (row.quantity_pack || row.quantity_box) &&
-          row.supplier
+          (row.quantity_pack || row.quantity_box)
       );
 
       if (validRows.length === 0) {
@@ -100,7 +96,6 @@ export default function ExportPage() {
         product_id: row.product_id,
         quantity_pack: row.quantity_pack ? parseInt(row.quantity_pack.toString()) : 0,
         quantity_box: row.quantity_box ? parseInt(row.quantity_box.toString()) : 0,
-        supplier: row.supplier,
         note: row.note || undefined,
       }));
 

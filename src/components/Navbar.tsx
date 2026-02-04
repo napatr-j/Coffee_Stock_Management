@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 
@@ -22,9 +23,18 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-8"
           >
-            <Link href="/" className="text-sm font-bold hover:text-gray-300 transition">
-              <div>บริษัท ทริลเลียนอิเทอร์นิตี้ จำกัด</div>
-              <div className="text-xs">Trillion Eternity</div>
+            <Link href="/" className="text-sm font-bold hover:text-gray-300 transition flex items-center gap-3">
+              <Image
+                src="/icon.png"
+                alt="Company Icon"
+                width={160}
+                height={160}
+                className="rounded-full"
+              />
+              <div>
+                <div>บริษัท ทริลเลียนอิเทอร์นิตี้ จำกัด</div>
+                <div className="text-xs">Trillion Eternity</div>
+              </div>
             </Link>
             <div className="flex items-center space-x-6">
               {navItems.map((item) => {

@@ -181,6 +181,8 @@ export default function ImportPage() {
                   values={row}
                   isExport={false}
                   showPoNo={true}
+                  firstPoNo={rows[0]?.po_no}
+                  onCopyPoNo={(poNo) => handleChange(index, 'po_no', poNo)}
                 />
               ))}
             </AnimatePresence>

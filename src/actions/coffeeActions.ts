@@ -110,7 +110,7 @@ export async function createCoffeeOut(items: any[]) {
           data: {
             product_id: item.product_id,
             quantity_pack: totalQuantityPack,
-            sender: item.supplier || 'N/A',
+            sender: 'N/A',
             note: item.note || null,
           },
         });
@@ -325,5 +325,50 @@ export async function getMonthlyTimeSeries(year: number) {
   } catch (error) {
     console.error('Error fetching time series:', error);
     return { success: false, error: 'Failed to fetch time series' };
+  }
+}
+
+export async function getDailyTimeSeries(year: number, month: number) {
+  try {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 1);
+    
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const days = [];
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayStart = new Date(year, month - 1, day);
+      const dayEnd = new Date(year, month - 1, day + 1);
+
+      const [inTotal, outTotal] = await Promise.all([
+        prisma.coffeeIn.aggregate({
+          where: {
+            date_in: { gte: dayStart, lt: dayEnd },
+          },
+          _sum: {
+            quantity_pack: true,
+          },
+        }),
+        prisma.coffeeOut.aggregate({
+          where: {
+            date_out: { gte: dayStart, lt: dayEnd },
+          },
+          _sum: {
+            quantity_pack: true,
+          },
+        }),
+      ]);
+
+      days.push({
+        day: day,
+        in: inTotal._sum.quantity_pack || 0,
+        out: outTotal._sum.quantity_pack || 0,
+      });
+    }
+
+    return { success: true, data: days };
+  } catch (error) {
+    console.error('Error fetching daily time series:', error);
+    return { success: false, error: 'Failed to fetch daily time series' };
   }
 }

@@ -12,7 +12,6 @@ export const CoffeeOutFormSchema = z.object({
   product_id: z.number().int().positive('Product required'),
   quantity_pack: z.number().int().min(0, 'Quantity must be >= 0'),
   quantity_box: z.number().int().min(0, 'Quantity must be >= 0'),
-  supplier: z.string().min(1, 'Supplier required'),
   note: z.string().optional(),
 });
 

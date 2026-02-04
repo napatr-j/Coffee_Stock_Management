@@ -11,6 +11,7 @@ import {
   getCoffeeOutHistory,
   getCurrentInventory,
   getMonthlyTimeSeries,
+  getDailyTimeSeries,
 } from '@/actions/coffeeActions';
 import { exportToExcel } from '@/lib/excelExport';
 import { CoffeeQuantity } from '@prisma/client';
@@ -68,7 +69,9 @@ export default function StatisticsPage() {
         getCoffeeInHistory(filters),
         getCoffeeOutHistory(filters),
         getCurrentInventory(),
-        getMonthlyTimeSeries(year),
+        month > 0 
+          ? getDailyTimeSeries(year, month)
+          : getMonthlyTimeSeries(year),
       ]);
 
       if (inResult.success) setCoffeeInData(inResult.data ?? []);
@@ -152,7 +155,7 @@ export default function StatisticsPage() {
         {/* Header */}
         <motion.div initial={{ y: -20 }} animate={{ y: 0 }} className="mb-8">
           <h1 className="text-3xl font-bold text-black mb-2">สถิติ</h1>
-          <p className="text-gray-600">ดูข้อมูลการนำเข้า นำออก และคลังสินค้า</p>
+          <p className="text-gray-600">ดูข้อมูลการรับสินค้า ส่งสินค้า และคลังสินค้า</p>
         </motion.div>
 
         {/* Filters */}
@@ -309,23 +312,36 @@ export default function StatisticsPage() {
               transition={{ duration: 0.2 }}
               className="space-y-8"
             >
-              {/* Monthly Chart */}
+              {/* Chart */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
                 className="bg-white p-6 rounded-lg border border-gray-200"
               >
-                <h3 className="text-lg font-semibold text-black mb-4">การนำเข้าและนำออกรายเดือน</h3>
+                <h3 className="text-lg font-semibold text-black mb-4">
+                  {month > 0 
+                    ? `การรับสินค้าและส่งสินค้าวันที่ในเดือน ${month}` 
+                    : 'การรับสินค้าและส่งสินค้ารายเดือน'}
+                </h3>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
+                    <XAxis 
+                      dataKey={month > 0 ? "day" : "month"}
+                      tickFormatter={(value) => {
+                        if (month > 0) {
+                          return `${value}`;
+                        }
+                        const monthNames = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+                        return monthNames[value - 1] || value;
+                      }}
+                    />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="in" name="นำเข้า" fill="#000000" />
-                    <Bar dataKey="out" name="นำออก" fill="#999999" />
+                    <Bar dataKey="in" name="รับสินค้า" fill="#000000" />
+                    <Bar dataKey="out" name="ส่งสินค้า" fill="#999999" />
                   </BarChart>
                 </ResponsiveContainer>
               </motion.div>

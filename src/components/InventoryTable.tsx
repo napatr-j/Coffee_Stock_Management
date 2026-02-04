@@ -16,7 +16,6 @@ export function InventoryTable({ data, isLoading }: InventoryTableProps) {
           <tr className="bg-black text-white">
             <th className="px-4 py-3 text-left text-sm font-semibold">สินค้า</th>
             <th className="px-4 py-3 text-center text-sm font-semibold">แพ็กเหลือ</th>
-            <th className="px-4 py-3 text-center text-sm font-semibold">ต่อ 1 กล่อง</th>
           </tr>
         </thead>
         <tbody>
@@ -35,9 +34,6 @@ export function InventoryTable({ data, isLoading }: InventoryTableProps) {
               </td>
               <td className="px-4 py-3 text-center text-sm font-semibold text-gray-700">
                 {product.quantity_pack}
-              </td>
-              <td className="px-4 py-3 text-center text-sm text-gray-700">
-                {product.pack_per_box}
               </td>
             </motion.tr>
           ))}

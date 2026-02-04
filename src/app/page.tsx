@@ -7,22 +7,22 @@ export default function Home() {
   const cards = [
     {
       icon: '📦',
-      title: 'นำสินค้าเข้า',
-      description: 'บันทึกการรับสินค้าเข้าคลังสินค้า',
+      title: 'รับสินค้า',
+      description: 'บันทึกการรับสินค้า',
       href: '/import',
       color: 'from-black to-gray-800',
     },
     {
       icon: '📤',
-      title: 'นำสินค้าออก',
-      description: 'บันทึกการส่งสินค้าออกจากคลังสินค้า',
+      title: 'ส่งสินค้า',
+      description: 'บันทึกการส่งสินค้า',
       href: '/export',
       color: 'from-gray-800 to-gray-600',
     },
     {
       icon: '📊',
       title: 'สถิติ',
-      description: 'ดูข้อมูลการนำเข้า นำออก และคลังสินค้า',
+      description: 'ดูข้อมูลการรับสินค้า ส่งสินค้า และคลังสินค้า',
       href: '/statistics',
       color: 'from-gray-600 to-gray-400',
     },

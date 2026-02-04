@@ -28,7 +28,6 @@ export function CoffeeOutTable({ data, isLoading }: CoffeeOutTableProps) {
             <th className="px-4 py-3 text-left text-sm font-semibold">วันที่</th>
             <th className="px-4 py-3 text-left text-sm font-semibold">สินค้า</th>
             <th className="px-4 py-3 text-center text-sm font-semibold">แพ็ก</th>
-            <th className="px-4 py-3 text-left text-sm font-semibold">ผู้ส่ง</th>
             <th className="px-4 py-3 text-left text-sm font-semibold">หมายเหตุ</th>
           </tr>
         </thead>
@@ -50,7 +49,6 @@ export function CoffeeOutTable({ data, isLoading }: CoffeeOutTableProps) {
               <td className="px-4 py-3 text-center text-sm text-gray-700">
                 {record.quantity_pack}
               </td>
-              <td className="px-4 py-3 text-sm text-gray-700">{record.sender}</td>
               <td className="px-4 py-3 text-sm text-gray-600">
                 {record.note || '-'}
               </td>

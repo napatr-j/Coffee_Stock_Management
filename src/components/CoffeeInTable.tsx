@@ -10,6 +10,7 @@ interface CoffeeInRecord {
   quantity_box: number;
   quantity_pack: number;
   receiver: string;
+  po_no?: string | null;
   note?: string | null;
   date_in: Date;
   product?: CoffeeQuantity;
@@ -30,6 +31,7 @@ export function CoffeeInTable({ data, isLoading }: CoffeeInTableProps) {
             <th className="px-4 py-3 text-left text-sm font-semibold">สินค้า</th>
             <th className="px-4 py-3 text-center text-sm font-semibold">กล่อง</th>
             <th className="px-4 py-3 text-center text-sm font-semibold">แพ็ก</th>
+            <th className="px-4 py-3 text-left text-sm font-semibold">P/O NO.</th>
             <th className="px-4 py-3 text-left text-sm font-semibold">ผู้รับ</th>
             <th className="px-4 py-3 text-left text-sm font-semibold">หมายเหตุ</th>
           </tr>
@@ -54,6 +56,9 @@ export function CoffeeInTable({ data, isLoading }: CoffeeInTableProps) {
               </td>
               <td className="px-4 py-3 text-center text-sm text-gray-700">
                 {record.quantity_pack}
+              </td>
+              <td className="px-4 py-3 text-sm text-gray-700">
+                {record.po_no || '-'}
               </td>
               <td className="px-4 py-3 text-sm text-gray-700">{record.receiver}</td>
               <td className="px-4 py-3 text-sm text-gray-600">
